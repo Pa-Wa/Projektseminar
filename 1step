@@ -1,0 +1,10 @@
+import pandas as pd
+import yfinance as yf
+from matplotlib import pyplot as plt
+#import plotly.express as px
+
+tesla = yf.Ticker("MSFT")
+hist_data = tesla.history(period = "max")
+hist_data.drop(["Open", "High", "Low", "Volume", "Dividends", "Stock Splits"], axis = 1, inplace = True)
+plt.plot(hist_data)
+plt.show()
