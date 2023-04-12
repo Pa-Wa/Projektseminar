@@ -8,3 +8,4 @@ hist_data = tesla.history(period = "max")
 hist_data.drop(["Open", "High", "Low", "Volume", "Dividends", "Stock Splits"], axis = 1, inplace = True)
 plt.plot(hist_data)
 plt.show()
+# test
