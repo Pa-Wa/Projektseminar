@@ -1,46 +1,56 @@
 import yfinance as yf
-import pandas as pd
-from pandas.tseries.offsets import BDay
+import statsmodels.api as sm
+import numpy as np
 from statsmodels.tsa.arima.model import ARIMA
+import pandas as pd
 import matplotlib.pyplot as plt
-from sklearn.metrics import mean_squared_error
 
-def arima_regression(stock_symbol):
-    # Download stock data
-    stock_data = yf.download(stock_symbol, start=pd.Timestamp.now().date() - pd.DateOffset(years=2),
-                             end='2023-05-14', progress=False)
+# Get user input for stock symbol
+symbol = input("Enter stock symbol: ")
 
-    # Only business days
-    stock_data = stock_data.asfreq(BDay())
+# Download historical data for the given stock
+stock_data = yf.download(symbol, period="max")
 
-    # Split training data (2 years) and testing data (01-14.05.2023)
-    # Only business days so not 14 days but only 10
-    training_data = stock_data[:-10]
-    testing_data = stock_data[-10:]
+# Create a new dataframe with only the closing prices
+df = stock_data[['Close']].reset_index()
 
-    # Fit ARIMA model
-    model = ARIMA(training_data['Close'], order=(1, 0, 0))
-    model_fit = model.fit()
+# Set the index of the dataframe to the date column
+df.set_index('Date', inplace=True)
 
-    # Generate predictions
-    predictions = model_fit.predict(start=testing_data.index[0], end=testing_data.index[-1])
+# Define the desired date ranges
+train_start_date = '2023-01-01'
+train_end_date = '2023-05-31'
+prediction_start_date = '2023-05-01'
+prediction_end_date = '2023-05-31'
 
-    # Calculate mean squared error
-    mse = mean_squared_error(testing_data['Close'], predictions)
+# Filter the data based on the date ranges
+train_data = df.loc[train_start_date:train_end_date]
+prediction_data = df.loc[prediction_start_date:prediction_end_date]
 
-    # Plot actual values and predictions for the specified range
-    plt.plot(testing_data.index, testing_data['Close'], label='Actual')
-    plt.plot(testing_data.index, predictions, label='Predicted')
-    plt.xlabel('Date')
-    plt.ylabel('Stock Price')
-    plt.title('ARIMA Regression - {} Stock (May 1st to May 14th, 2023)'.format(stock_symbol))
-    plt.legend()
-    plt.text(testing_data.index[-1], testing_data['Close'].iloc[-1], 'MSE: {:.2f}'.format(mse),
-             verticalalignment='bottom', horizontalalignment='right')
-    plt.show()
+# Fit an ARIMA model on the training data
+model = ARIMA(train_data, order=(1, 1, 1))
+model_fit = model.fit()
 
-    print('Mean Squared Error:', mse)
+# Predict the closing prices for the desired prediction range
+y_pred = model_fit.predict(start=prediction_start_date, end=prediction_end_date)
 
-# Main program
-stock_symbol = input('Enter stock abbreviation (e.g., AAPL, MSFT): ')
-arima_regression(stock_symbol)
+# Calculate the mean absolute error (MAE) of the predictions
+mae = np.mean(np.abs(y_pred - prediction_data.values.flatten()))
+
+# Print the MAE
+print(f"Mean Absolute Error (MAE): {mae}")
+
+# Create a figure and axis for the graph
+fig, ax = plt.subplots()
+
+# Plot the actual and predicted closing prices
+ax.plot(prediction_data.index, prediction_data.values, label='Actual')
+ax.plot(prediction_data.index, y_pred, label='Predicted')
+
+# Set labels, title, legend and display graph
+ax.set_xlabel('Date')
+ax.set_ylabel('Closing Price')
+ax.set_title('Actual vs. Predicted Closing Prices')
+plt.xticks(rotation=45)
+ax.legend()
+plt.show()
