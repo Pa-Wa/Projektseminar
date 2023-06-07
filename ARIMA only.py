@@ -3,7 +3,6 @@ import statsmodels.api as sm
 import numpy as np
 from statsmodels.tsa.arima.model import ARIMA
 import pandas as pd
-import matplotlib.pyplot as plt
 
 # Get user input for stock symbol
 symbol = input("Enter stock symbol: ")
@@ -27,30 +26,37 @@ prediction_end_date = '2023-05-31'
 train_data = df.loc[train_start_date:train_end_date]
 prediction_data = df.loc[prediction_start_date:prediction_end_date]
 
-# Fit an ARIMA model on the training data
-model = ARIMA(train_data, order=(1, 1, 1))
-model_fit = model.fit()
+best_mae = float('inf')  # Initialize best MAE as infinity
+best_params = None  # Initialize best hyperparameters as None
 
-# Predict the closing prices for the desired prediction range
-y_pred = model_fit.predict(start=prediction_start_date, end=prediction_end_date)
+# Hyperparameter tuning loop
+for p in range(3):  # Try different values for p (order of autoregressive part)
+    for d in range(3):  # Try different values for d (order of differencing)
+        for q in range(3):  # Try different values for q (order of moving average part)
+            # Fit an ARIMA model on the training data with the current hyperparameters
+            model = ARIMA(train_data, order=(p, d, q))
+            model_fit = model.fit()
 
-# Calculate the mean absolute error (MAE) of the predictions
-mae = np.mean(np.abs(y_pred - prediction_data.values.flatten()))
+            # Predict the closing prices for the desired prediction range
+            y_pred = model_fit.predict(start=prediction_start_date, end=prediction_end_date)
 
-# Print the MAE
-print(f"Mean Absolute Error (MAE): {mae}")
+            # Calculate the mean absolute error (MAE) of the predictions
+            mae = np.mean(np.abs(y_pred - prediction_data.values.flatten()))
 
-# Create a figure and axis for the graph
-fig, ax = plt.subplots()
+            # Check if the current hyperparameters provide a better MAE
+            if mae < best_mae:
+                best_mae = mae
+                best_params = (p, d, q)
 
-# Plot the actual and predicted closing prices
-ax.plot(prediction_data.index, prediction_data.values, label='Actual')
-ax.plot(prediction_data.index, y_pred, label='Predicted')
+# Fit the ARIMA model with the best hyperparameters on the entire training data
+best_model = ARIMA(df, order=best_params)
+best_model_fit = best_model.fit()
 
-# Set labels, title, legend and display graph
-ax.set_xlabel('Date')
-ax.set_ylabel('Closing Price')
-ax.set_title('Actual vs. Predicted Closing Prices')
-plt.xticks(rotation=45)
-ax.legend()
-plt.show()
+# Predict the closing prices for the desired prediction range using the best model
+best_y_pred = best_model_fit.predict(start=prediction_start_date, end=prediction_end_date)
+
+# Print the best hyperparameters and the corresponding MAE
+print(f"Best Hyperparameters: (p={best_params[0]}, d={best_params[1]}, q={best_params[2]})")
+print(f"Best Mean Absolute Error (MAE): {best_mae}")
+print("Predicted closing prices for the desired prediction range using the best model:")
+print(best_y_pred)
