@@ -9,7 +9,7 @@ from dateutil.relativedelta import relativedelta
 #Inputs, die die Methode braucht einfügen!
 
 def ARIMA(historical_data):
-    model = auto_arima(historical_data, seasonal=False, suppress_warnings=True)
+    model = auto_arima(historical_data, seasonal=True, stepwise=True, m=6, method="bfgs", maxiter=20, suppress_warnings=True) #Auto-Arima passt automatisch p un q an
     forecast = model.predict(n_periods=10)
     forecast_df = pd.DataFrame(forecast, columns=["Predicted Price"])
     return forecast_df
@@ -26,7 +26,7 @@ end_zeitpunkte = ["2023-02-18","2023-05-17"]
 end_zeitpunkte_ts = [datetime.strptime(end_zeitpunkte[0], "%Y-%m-%d").date(), datetime.strptime(end_zeitpunkte[1], "%Y-%m-%d").date()]
 
 #hier Zeitraum der historischen Daten anpassen:
-start_zeitpunkte_ts = [end_zeitpunkte_ts[0]-relativedelta(months=2), end_zeitpunkte_ts[1]-relativedelta(months=2)]
+start_zeitpunkte_ts = [end_zeitpunkte_ts[0]-relativedelta(months=24), end_zeitpunkte_ts[1]-relativedelta(months=24)]
 
 start_zeitpunkte = [start_zeitpunkte_ts[0].strftime("%Y-%m-%d"), start_zeitpunkte_ts[1].strftime("%Y-%m-%d")]
 counter = 0
