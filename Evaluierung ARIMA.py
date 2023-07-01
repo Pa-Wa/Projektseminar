@@ -12,7 +12,7 @@ def ARIMA(historical_data):
     model = auto_arima(historical_data, seasonal=True, stepwise=True, m=6, method="bfgs", maxiter=20, suppress_warnings=True) #Auto-Arima passt automatisch p un q an
     forecast = model.predict(n_periods=10)
     forecast_df = pd.DataFrame(forecast, columns=["Predicted Price"])
-    return forecast_df
+    return model, forecast_df
 
 def MEA(y_true, y_pred):
     mea = mean_absolute_error(y_true, y_pred)
@@ -21,7 +21,7 @@ def MEA(y_true, y_pred):
     return mea_skaled
 
 
-aktien = ["^GSPC","^RUT","NVD.DE","AMD.DE","TL0.DE","MDO.DE","SRB.DE","PFE.DE","U9R.F","1NBA.F"] 
+aktien = ["^MDAXI","ALV.DE","AMZ.DE","DPW.DE","MDO.DE","NVD.DE"] 
 end_zeitpunkte = ["2023-02-18","2023-05-17"]
 end_zeitpunkte_ts = [datetime.strptime(end_zeitpunkte[0], "%Y-%m-%d").date(), datetime.strptime(end_zeitpunkte[1], "%Y-%m-%d").date()]
 
@@ -41,8 +41,14 @@ for i in range(len(end_zeitpunkte)):
         index_list = prog_data.index.tolist()
         
         #Methode einfügen! -> Wichtig enstehender DF muss wie besprochen aussehen und forecast_df heißen!
-        forecast_df = ARIMA(hist_data) #meine Methode
-
+        #Zeige p, q, d an
+        model, forecast_df = ARIMA(hist_data)
+        p = model.order[0]
+        q = model.order[1]
+        d = model.order[2]
+        print(f"Estimated p for {aktie}: {p}")
+        print(f"Estimated q for {aktie}: {q}")
+        print(f"Estimated d for {aktie}: {d}")
 
         forecast_df.set_index(pd.Index(index_list), inplace=True)
         result = pd.concat([prog_data, forecast_df], axis=1)
