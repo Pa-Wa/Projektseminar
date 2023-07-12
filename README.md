@@ -1,2 +1,5 @@
-# Projektseminar
-BuA Projektseminar SS 23 (Dashboard und Prognosemethode)
+# BuA Projektseminar SS23
+Finanz-Dashboard und Verfahren zur Kursprognose von Aktien/Indizes
+
+Dokumentenübersicht:
+
