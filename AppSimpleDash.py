@@ -1,3 +1,7 @@
+'''
+Fassung, die Anfang des Semester präsentiert wurde
+'''
+
 from dash import Dash, html, dcc, Input, Output
 import pandas as pd
 import yfinance as yf
