@@ -16,4 +16,4 @@ Finanz-Dashboard und Verfahren zur Kursprognose von Aktien/Indizes
 
 * Unused: 
 
-Information zum Kommentieren: Darauf ausgelegt, dass Coding des Dashboards von Seite zu Seite gelesen wird. Sich wiederholende Elemente wurden kein 2. mal kommentiert außer sie weisen eine große relevantz auf
+Information zum Kommentieren: Beim Dashboard wurden sich wiederholende Elemente nicht erneut kommentiert. Demnach bitte von "vorne" nach "hinten" lesen, bzw. von app.py nach pg6.
