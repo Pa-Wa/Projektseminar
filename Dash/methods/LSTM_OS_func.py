@@ -32,7 +32,7 @@ def LSTM_OS(x_train, Y_train, x_val, Y_val, window, prediction_sz, last_prices, 
                         layers.Dense(prediction_sz)])
 
         model.compile(loss = "mse", optimizer = Adam(learning_rate = 0.001), metrics = ["mean_absolute_error"])
-        model.fit(x_train, Y_train, validation_data = (x_val, Y_val), epochs = 25, verbose = 0, batch_size = 32)
+        model.fit(x_train, Y_train, validation_data = (x_val, Y_val), epochs = 50, verbose = 0, batch_size = 32)
 
     train_predict = model.predict(x_train)
     val_predict = model.predict(x_val)
@@ -74,7 +74,7 @@ def LSTM_OS_man_pred(history_data, token, date):
                 optimizer=Adam(learning_rate = 0.001),
                 metrics=["mean_absolute_error"])
 
-        model.fit(X_train, y_train, validation_data = (X_val, y_val), epochs = 20, verbose = 0, batch_size = 32)
+        model.fit(X_train, y_train, validation_data = (X_val, y_val), epochs = 50, verbose = 0, batch_size = 32)
 
     last_prices = data_scaled[-1*window_size:]
     last_prices_array = np.array(last_prices)
