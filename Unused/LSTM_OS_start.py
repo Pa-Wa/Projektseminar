@@ -8,7 +8,7 @@ from keras import layers
 from keras.optimizers import Adam
 from sklearn.preprocessing import MinMaxScaler
 
-data = yf.download("NVDA", start="2020-06-23", end="2023-06-24")
+data = yf.download("NVDA", start="2020-06-22", end="2023-06-24")
 data.drop(columns = ["Open", "High", "Low", "Volume", "Adj Close"], axis = 1, inplace = True)
 scaler = MinMaxScaler(feature_range = (0, 1))
 data_scaled = scaler.fit_transform(data)
