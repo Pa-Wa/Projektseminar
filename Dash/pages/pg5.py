@@ -142,14 +142,13 @@ layout = dbc.Container(
     ], fluid = True
 )
 
-@callback(
+@callback( #Führe LSTM-Methode aus, speichere Vorhersage im Store, aktualisiere Train/Vald. Plot und das Performance Div
     Output("plot_trainvalsets_lstm", "figure"),
     Output("output_div_perf_lstm", "children"),
     Output("forecast_store_lstm", "data"),
     Input("data_store", "data"),
     Input("ticker_store", "data"),
     Input("token", "value"))
-
 def update_TrainValPlotPerf_StorePred_lstm(data, ticker, token):
     hist_data = pd.read_json(data, orient = "split")
     hist_data.drop(columns = ["Open", "High", "Low", "Volume", "Adj Close"], inplace = True)
@@ -157,30 +156,31 @@ def update_TrainValPlotPerf_StorePred_lstm(data, ticker, token):
     ticker_data_dic = dict(ticker_data)
     currency = ticker_data_dic["currency"]
     today = datetime.today().date()
-    start = today - timedelta(days=730)
-    hist_data = hist_data.loc[hist_data.index >= np.datetime64(start)]
+    start = today - timedelta(days=730) #Zeitraum anpassen (2Jahre)
+    hist_data = hist_data.loc[hist_data.index >= np.datetime64(start)] #Datensatz filtern
     true_data = hist_data.copy()
     scaler = MinMaxScaler(feature_range = (0, 1))
-    hist_data[["Close"]] = scaler.fit_transform(hist_data[["Close"]])
-    window_size = 50
-    last_price = hist_data.iloc[-1][-1]
+    hist_data[["Close"]] = scaler.fit_transform(hist_data[["Close"]]) #Daten skalieren
+    window_size = 50 #Windowgröße definieren
+    last_price = hist_data.iloc[-1][-1] #Letzten Kurs speichern
     data_for_func = hist_data.copy()
-    windowed_df = data_to_windowed_data(data_for_func, window_size)
+    windowed_df = data_to_windowed_data(data_for_func, window_size) #Erhalte Windowed DF
     dates, X, y = windowed_df_to_d_x_y(windowed_df)
-    train_split = int(len(dates) * 0.8)
+    train_split = int(len(dates) * 0.8) #Aufteilung der Daten in Training und Valid.
     dates_train, X_train, y_train = dates[:train_split], X[:train_split], y[:train_split]
     dates_val, X_val, y_val = dates[train_split:], X[train_split:], y[train_split:]
 
-    train_predictions, val_predictions, forecast_df = LSTM(X_train, y_train, X_val, y_val, window_size, last_price, scaler, token)
+    train_predictions, val_predictions, forecast_df = LSTM(X_train, y_train, X_val, y_val, window_size, last_price, scaler, token) #Prognose
 
-    train_predictions = scaler.inverse_transform(train_predictions)
+    train_predictions = scaler.inverse_transform(train_predictions) #Skaliere vorhergesagtes Training/Vald. zurück
     val_predictions = scaler.inverse_transform(val_predictions)
-    y_train_rescaled = y_train.reshape(len(y_train), 1)
-    y_train_rescaled = scaler.inverse_transform(y_train_rescaled)
+    y_train_rescaled = y_train.reshape(len(y_train), 1) #Ändere Format
+    y_train_rescaled = scaler.inverse_transform(y_train_rescaled) #Skaliere tatsächliche Trainingsdaten zurück
     average_price_train = y_train_rescaled.mean()
     y_val_rescaled = y_val.reshape(len(y_val), 1)
-    y_val_rescaled = scaler.inverse_transform(y_val_rescaled)
+    y_val_rescaled = scaler.inverse_transform(y_val_rescaled) #Skaliere tatsächliche TValidierungssdaten zurück
     average_price_val = y_val_rescaled.mean()
+    #Berechne Kennzahlen
     mae_train = round(mean_absolute_error(y_train_rescaled, train_predictions), 2)
     mae_scaled_train = round((mae_train/average_price_train)*100, 2)
     mse_train = round(mean_squared_error(y_train_rescaled, train_predictions), 2)
@@ -189,34 +189,36 @@ def update_TrainValPlotPerf_StorePred_lstm(data, ticker, token):
     mae_scaled_valid = round((mae_valid/average_price_val)*100, 2)
     mse_valid = round(mean_squared_error(y_val_rescaled, val_predictions), 2)
     rmse_valid = round(math.sqrt(mse_valid), 2)
-    output = [
+    output = [ #Für Performance Div
         html.P(f"MAE: {mae_train:.2f} (Train) {mae_valid:.2f} (Validation)"),
         html.P(f"MAE Scaled: {mae_scaled_train} % (Train) {mae_scaled_valid} % (Validation)"),
         html.P(f"MSE: {mse_train:.2f} (Train) {mse_valid:.2f} (Validation)"),
         html.P(f"RMSE: {rmse_train} (Train) {rmse_valid} (Validation)")
     ]
-    df_valid = pd.DataFrame(index = dates_val, columns = ["True", "Pred"], data = np.hstack((y_val_rescaled, val_predictions)))
+    df_valid = pd.DataFrame(index = dates_val, columns = ["True", "Pred"], data = np.hstack((y_val_rescaled, val_predictions))) #Erstellt DF für Train/Vald 
     df_train = pd.DataFrame(index = dates_train, columns = ["True", "Pred"], data = np.hstack((y_train_rescaled, train_predictions)))
-    true_data = true_data.iloc[window_size:]
+    true_data = true_data.iloc[window_size:] #Speichere die tasächlichen Kurse für die prognostizierten Tage ab
+    #Erstelle Plot
     fig_trainval_lstm = px.line(template = "simple_white")
     fig_trainval_lstm.add_trace(go.Scatter(x = true_data.index, y = true_data["Close"], mode = "lines", name = "True Data", line_color = "red"))
     fig_trainval_lstm.add_trace(go.Scatter(x = df_train.index, y = df_train["Pred"], mode = "lines", name = "Train Prediction", line_color = "blue"))
     fig_trainval_lstm.add_trace(go.Scatter(x = df_valid.index, y = df_valid["Pred"], mode = "lines", name = "Validation Prediction", line_color = "green"))
     fig_trainval_lstm.update_layout(xaxis_title = "Date", yaxis_title = f"Close Price in {currency}")
-
+    Speicher die Vorhersage
     forecast = forecast_df["Close"].tolist()
     last_date = hist_data.index[-1]
-    market_calendar = get_calendar("NYSE")
+    market_calendar = get_calendar("NYSE") #nur Börsentage
     next_dates = market_calendar.valid_days(start_date = last_date + timedelta(days = 1), end_date = last_date + timedelta(days = 60))
     next_days_needed = next_dates[:30]
     for i in range(30):
         next_day = next_days_needed[i]
         next_day_date = next_day.date()
         hist_data.loc[np.datetime64(next_day_date)] = forecast[i]
-    hist_data = hist_data.iloc[-30:]
+    hist_data = hist_data.iloc[-30:] #nur die vorhergesagten Tage
     return fig_trainval_lstm, output, hist_data.to_json(orient = "split")
 
-@callback(Output("data_table_pred_lstm", "data"),
+@callback( #Update Prognose-Tabelle (wie bei pg3)
+    Output("data_table_pred_lstm", "data"),
     Output("data_table_pred_lstm", "columns"),
     Output("data_table_pred_lstm", "style_data_conditional"),
     Output("data_table_pred_lstm", "style_header"),
@@ -247,7 +249,7 @@ def update_PredTable_lstm(forecast_data, data, count_days):
     style_header = {"color": "black"}
     return data_table, columns, style_data_conditional, style_header
 
-@callback(
+@callback( #Update Prognose Plot (wie bei pg3)
     Output("plot_pred_lstm", "figure"),
     Input("forecast_store_lstm", "data"),
     Input("data_store", "data"),
@@ -272,7 +274,7 @@ def update_PlotPred_lstm(forecast_data, data, count_days, ticker):
     fig_pred_lstm.update_layout(xaxis_title = "Date", yaxis_title = f"Close Price in {currency}")
     return fig_pred_lstm
 
-@callback(
+@callback( #Update manuelle Prognose (Plot und Performance)
     Output("plot_pred_man_lstm", "figure"),
     Output("output_div_perf_pred_man_lstm", "children"),
     Input("data_store", "data"),
@@ -280,6 +282,7 @@ def update_PlotPred_lstm(forecast_data, data, count_days, ticker):
     Input("datepicker_single_lstm", "date"),
     Input("token", "value"))
 def update_Pred_Man_lstm(data, ticker, date, token):
+    #Vorgehen identisch zu oben
     hist_data = pd.read_json(data, orient = "split")
     date_format = datetime.strptime(date, "%Y-%m-%d").date()
     start = date_format - timedelta(days = 730)
