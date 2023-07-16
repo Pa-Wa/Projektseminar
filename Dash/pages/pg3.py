@@ -69,7 +69,7 @@ card_plot_pred_man_hw = dbc.Card(
                 html.P("Select start day for prediction:"),
                 dcc.DatePickerSingle(id = "datepicker_single_hw", min_date_allowed = date(1980,1,1),
                                     max_date_allowed = date.today() - timedelta(days = 17), initial_visible_month = date.today() - timedelta(days = 17),
-                                    date = date.today() - timedelta(days = 17)) #Range-Picker für ein Datum
+                                    date = date.today() - timedelta(days = 17)), #Range-Picker für ein Datum
                 html.P(),
                 dcc.Graph(id = "plot_pred_man_hw", figure = {})
             ]
