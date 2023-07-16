@@ -1,8 +1,9 @@
 # Finanz-Dashboard und Verfahren zur Kursprognose von Aktien/Indizes
 
-Yann Chevelaz und Pascal Wagener
+Autoren: Yann Chevelaz und Pascal Wagener
 Business Analytics Projektseminar Sommersemester 2023
 Universität Siegen
+---
 
 #### Doku:
 * Dash:
