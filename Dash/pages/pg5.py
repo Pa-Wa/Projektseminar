@@ -13,10 +13,14 @@ import math
 from sklearn.preprocessing import MinMaxScaler
 import tensorflow as tf
 from methods.LSTM_func import data_to_windowed_data, windowed_df_to_d_x_y, LSTM, LSTM_man_pred
-
 pd.options.mode.chained_assignment = None
 
 dash.register_page(__name__, name = "LSTM prediction")
+
+"""
+Layout identisch zu Holt_Winters (für Kommentierung s. pg3)
+Callbacks sind kommentiert.
+"""
 
 card_plot_pred_lstm = dbc.Card(
     [
