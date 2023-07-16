@@ -12,7 +12,7 @@ Finanz-Dashboard und Verfahren zur Kursprognose von Aktien/Indizes
     * pg5: LSTM Prognose
     * pg6: LSTM One-Shot Prognose
   * methods: Funktionen der einzelnen Prognosen (HW, ARIMA, LSTM, LSTM-OS)
-  * saved_models: Vortrainierte Modelle für die Methoden LSTM und LSTM-OS für die Aktien Tesla und Nvidia (Achtung: Training nicht UpToDate)
+  * saved_model: Vortrainierte Modelle für die Methoden LSTM und LSTM-OS für die Aktien Tesla und Nvidia (Achtung: Training nicht UpToDate)
 
 * Unused (ohne Relevanz): Verworfene, bzw. in andere Dateien implementierte Elemente (nicht kommentiert) -> benötigt keiner Betrachtung
 
