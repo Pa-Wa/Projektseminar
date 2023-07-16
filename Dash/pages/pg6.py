@@ -13,11 +13,14 @@ import math
 from sklearn.preprocessing import MinMaxScaler
 import tensorflow as tf
 from methods.LSTM_OS_func import evaluate_model, LSTM_OS, LSTM_OS_man_pred
-
 pd.options.mode.chained_assignment = None
 
 dash.register_page(__name__, name = "LSTM-OneShot prediction")
 
+"""
+Layout nahezu identisch zu pg3 (ein Plot weniger).
+Callbacks nahezu identisch zu pg5 (Unterschiede wurden kommentiert)
+"""
 
 card_plot_pred_lstmos = dbc.Card(
     [
@@ -123,7 +126,7 @@ layout = dbc.Container(
     ], fluid = True
 )
 
-@callback(
+@callback( #Führe anhand LSTM-OS Prognose aus, speichere diese im Store ab und update Performance Div
     Output("output_div_perf_lstmos", "children"),
     Output("forecast_store_lstmos", "data"),
     Input("data_store", "data"),
@@ -136,20 +139,21 @@ def update_TrainValPerf_StorePred_lstmos(data, count_days, token):
     start = today - timedelta(days = 730)
     hist_data = hist_data.loc[hist_data.index >= np.datetime64(start)]
     scaler = MinMaxScaler(feature_range = (0, 1))
-    data_scaled = scaler.fit_transform(hist_data)
+    data_scaled = scaler.fit_transform(hist_data) #Skaliere Daten
     X, y = [], []
     window_size = 30
     prediction_size = count_days
-    for i in range(window_size, len(data_scaled) - prediction_size + 1):
+    for i in range(window_size, len(data_scaled) - prediction_size + 1): #Erstelle Windowed-DF
         X.append(data_scaled[i-window_size: i])
         y.append(data_scaled[i: i+prediction_size])
     X, y = np.array(X), np.array(y)
-    train_split = int(len(X) * 0.8)
+    train_split = int(len(X) * 0.8) #Splitte Daten in Training und Validierung
     X_train = X[:train_split]
     y_train = y[:train_split]
     X_val = X[train_split:] 
     y_val = y[train_split:]
     last_prices = data_scaled[-1 * window_size:]
+    
     train_predictions, val_predictions, forecast_df = LSTM_OS(X_train, y_train, X_val, y_val, window_size,
                                                                 prediction_size, last_prices, scaler, token, count_days)
 
@@ -159,9 +163,9 @@ def update_TrainValPerf_StorePred_lstmos(data, count_days, token):
     y_val_shaped = y_val.reshape(len(y_val), prediction_size)
     y_train_scaled = scaler.inverse_transform(y_train_shaped)
     y_val_scaled = scaler.inverse_transform(y_val_shaped)
-    total_rmse_train, average_price_train, total_mae_train = evaluate_model(y_train_scaled, train_predictions)
+    total_rmse_train, average_price_train, total_mae_train = evaluate_model(y_train_scaled, train_predictions) #Errechne Kennzahlen
     total_rmse_val, average_price_val, total_mae_val = evaluate_model(y_val_scaled, val_predictions)
-
+    #Berrechne weitere Kennzahlen
     mae_train = round(total_mae_train, 2)
     mae_scaled_train = round((total_mae_train/average_price_train)*100, 2)
     mse_train = round((total_rmse_train**2), 2)
@@ -232,6 +236,7 @@ def update_Plot_Pred_lstmos(forecast_data, data, ticker):
     data_pred = fore_data.loc[fore_data.index > last_element]
     merged_df = pd.concat([hist_data, data_pred])
     df_pred_add_last_element = merged_df.tail(len(data_pred)+1)
+    #Erstelle Plot
     fig_pred_lstmos = px.line(template = "simple_white")
     fig_pred_lstmos.add_trace(go.Scatter(x = hist_data.index, y = hist_data["Close"], mode = "lines", name = "Data", line_color = "blue"))
     fig_pred_lstmos.add_trace(go.Scatter(x = df_pred_add_last_element.index, y = df_pred_add_last_element["Close"],mode = "lines", name = "Prediction", line_color = "red"))
@@ -273,11 +278,12 @@ def update_Pred_Man_lstmos(data, ticker, date, token):
         next_day_date = next_day.date()
         hist_data.loc[np.datetime64(next_day_date)] = forecast[i]
     hist_data = hist_data.iloc[-10:]
+    #Erstelle Plot
     fig_man_pred_lstmos = px.line(template = "simple_white")
     fig_man_pred_lstmos.add_trace(go.Scatter(x = hist_data.index.strftime("%Y-%m-%d"), y = hist_data["Close"], mode = "lines", name = "Prediction", line_color = "red"))
     fig_man_pred_lstmos.add_trace(go.Scatter(x = hist_data_for_pred.index.strftime("%Y-%m-%d"), y = hist_data_for_pred["Close"], mode = "lines", name = "True Data", line_color = "blue"))
     fig_man_pred_lstmos.update_layout(xaxis_title = "Date", yaxis_title = f"Close Price in {currency}", title = "Prediction", xaxis= {"type": "category"})
-    
+    #Berechne Kennzahlen
     mae = round(mean_absolute_error(hist_data_for_pred["Close"], hist_data["Close"]), 2)
     mae_scaled = round((mae/hist_data_for_pred["Close"].mean())*100, 2)
     mse = round(mean_squared_error(hist_data_for_pred["Close"], hist_data["Close"]), 2)
