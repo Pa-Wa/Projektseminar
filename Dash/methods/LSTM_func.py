@@ -63,7 +63,7 @@ def LSTM(x_train, Y_train, x_val, Y_val, window, last_price, scaler, token):
                             layers.LSTM(32, return_sequences = False),
                             layers.Dense(1)])
         model.compile(loss = "mse", optimizer = Adam(learning_rate = 0.001), metrics = ["mean_absolute_error"]) #Definiert Performance-Messung
-        model.fit(x_train, Y_train, validation_data = (x_val, Y_val), epochs = 25, verbose = 0, batch_size = 32) #Trainiert Modell und wertet anhand Vald-Set aus
+        model.fit(x_train, Y_train, validation_data = (x_val, Y_val), epochs = 50, verbose = 0, batch_size = 32) #Trainiert Modell und wertet anhand Vald-Set aus
 
     train_predict = model.predict(x_train) #Verhersage der Trainigs- und Validierungsdaten
     val_predict = model.predict(x_val)
@@ -116,7 +116,7 @@ def LSTM_man_pred(history_data, token, date):
                             layers.Dense(1)])
 
         model.compile(loss = "mse", optimizer = Adam(learning_rate = 0.001), metrics = ["mean_absolute_error"])
-        model.fit(X_train, y_train, validation_data = (X_val, y_val), epochs = 20, verbose = 0, batch_size = 32)
+        model.fit(X_train, y_train, validation_data = (X_val, y_val), epochs = 50, verbose = 0, batch_size = 32)
     pre_last_window = X_val[-1]
     last_window = np.delete(pre_last_window, obj = [0])
     last_price = history_data.iloc[-1][-1]
