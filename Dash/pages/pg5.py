@@ -204,7 +204,7 @@ def update_TrainValPlotPerf_StorePred_lstm(data, ticker, token):
     fig_trainval_lstm.add_trace(go.Scatter(x = df_train.index, y = df_train["Pred"], mode = "lines", name = "Train Prediction", line_color = "blue"))
     fig_trainval_lstm.add_trace(go.Scatter(x = df_valid.index, y = df_valid["Pred"], mode = "lines", name = "Validation Prediction", line_color = "green"))
     fig_trainval_lstm.update_layout(xaxis_title = "Date", yaxis_title = f"Close Price in {currency}")
-    Speicher die Vorhersage
+    #Speicher die Vorhersage
     forecast = forecast_df["Close"].tolist()
     last_date = hist_data.index[-1]
     market_calendar = get_calendar("NYSE") #nur Börsentage
