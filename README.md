@@ -1,5 +1,7 @@
-# BuA Projektseminar SS23 (Chevalaz/Wagener)
-Finanz-Dashboard und Verfahren zur Kursprognose von Aktien/Indizes
+# Finanz-Dashboard und Verfahren zur Kursprognose von Aktien/Indizes
+Autoren: Yann Chevelaz und Pascal Wagener
+BuA Projektseminar SS23
+Universität Siegen
 
 #### Doku:
 * Dash:
