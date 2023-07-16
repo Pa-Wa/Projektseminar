@@ -16,6 +16,6 @@ Finanz-Dashboard und Verfahren zur Kursprognose von Aktien/Indizes
 
 *
 
-* Unused (ohne Relevanz): Verworfene, bzw. in andere Dateien implementierte Elemente (nicht kommentiert) -> benötigt keiner Betrachtung
+* Unused (ohne Relevanz): Verworfene, bzw. in andere Dateien implementierte Elemente und Dateien zur Erstellung von Plots (nicht kommentiert) -> benötigt keiner Betrachtung
 
 Information zum Kommentieren: Beim Dashboard wurden sich wiederholende Elemente nicht erneut kommentiert. Demnach bitte von "vorne" nach "hinten" lesen, bzw. von app.py nach pg6.
