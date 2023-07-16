@@ -58,7 +58,7 @@ model = Sequential([layers.Input((window_size, 1)),
                     layers.Dense(32, activation="relu"),
                     layers.Dense(1)])
 
-#early_stopping = keras.callbacks.EarlyStopping(monitor='val_loss', patience = 5, mode='min')
+#early_stopping = keras.callbacks.EarlyStopping(monitor='val_loss', patience = 5, mode='min') #Stoppt Modell sobald keine Besserung in 5 aufeinanderfolgenden Epochen
 
 model.compile(loss="mse", 
               optimizer=Adam(learning_rate=0.001),
