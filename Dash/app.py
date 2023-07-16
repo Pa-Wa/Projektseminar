@@ -28,7 +28,7 @@ topbar = dbc.Nav(
                 dbc.Col(html.P("Enter US stock token:"), width = 1), #width passt die Breite des Elementes an
                 dbc.Col(
                         [
-                                dbc.Input(id = "token", placeholder = "Token", type = "text", value = "TSLA", debounce = True) #Manuelles Input-Feld zur Nutzereingabe des Aktien-Tokens
+                                dbc.Input(id = "token", placeholder = "Token", type = "text", value = "MSFT", debounce = True) #Manuelles Input-Feld zur Nutzereingabe des Aktien-Tokens
                         ], width= True
                 )                                 
             ], vertical = False ,pills = True, className = "navbar navbar-expand-lg bg-primary" #className legt den Style der einzelnen Komponenten fest, bspw. Bar (hier) oder Cards (kommen noch)
