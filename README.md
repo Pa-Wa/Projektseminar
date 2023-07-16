@@ -14,6 +14,8 @@ Finanz-Dashboard und Verfahren zur Kursprognose von Aktien/Indizes
   * methods: Funktionen der einzelnen Prognosen (HW, ARIMA, LSTM, LSTM-OS)
   * saved_model: Vortrainierte Modelle für die Methoden LSTM und LSTM-OS für die Aktien Tesla und Nvidia (Achtung: Training nicht UpToDate)
 
+*
+
 * Unused (ohne Relevanz): Verworfene, bzw. in andere Dateien implementierte Elemente (nicht kommentiert) -> benötigt keiner Betrachtung
 
 Information zum Kommentieren: Beim Dashboard wurden sich wiederholende Elemente nicht erneut kommentiert. Demnach bitte von "vorne" nach "hinten" lesen, bzw. von app.py nach pg6.
