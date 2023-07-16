@@ -1,7 +1,7 @@
 # BuA Projektseminar SS23 (Chevalaz/Wagener)
 Finanz-Dashboard und Verfahren zur Kursprognose von Aktien/Indizes
 
-#### Dokumentenübersicht:
+#### Doku:
 * Dash:
   * app.py: Main-Datei (auszuführende Datei) der Dash-App; Layout Definition der einzelnen Pages
   * pages:
