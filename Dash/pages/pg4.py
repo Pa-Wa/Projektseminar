@@ -10,7 +10,7 @@ from pandas_market_calendars import get_calendar
 import plotly.graph_objects as go
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import math
-from Methods.Arima_func import Arima
+from methods.Arima_func import Arima
 pd.options.mode.chained_assignment = None
 
 dash.register_page(__name__, name = "Arima prediciton")
