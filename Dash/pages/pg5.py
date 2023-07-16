@@ -12,7 +12,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error
 import math
 from sklearn.preprocessing import MinMaxScaler
 import tensorflow as tf
-from Methods.LSTM_func import data_to_windowed_data, windowed_df_to_d_x_y, LSTM, LSTM_man_pred
+from methods.LSTM_func import data_to_windowed_data, windowed_df_to_d_x_y, LSTM, LSTM_man_pred
 
 pd.options.mode.chained_assignment = None
 
