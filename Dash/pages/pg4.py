@@ -15,6 +15,11 @@ pd.options.mode.chained_assignment = None
 
 dash.register_page(__name__, name = "Arima prediciton")
 
+"""
+Identischer Aufbau/Callbacks wie bei Holt-Winter!
+Für Kommentierung siehe pg3.
+"""
+
 card_plot_pred_arima = dbc.Card(
     [
         dbc.CardHeader(html.H5("Prediction Plot")),
