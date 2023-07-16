@@ -21,7 +21,14 @@ Universität Siegen
   * methods: Funktionen der einzelnen Prognosen (HW, ARIMA, LSTM, LSTM-OS)
   * saved_model: Vortrainierte Modelle für die Methoden LSTM und LSTM-OS für die Aktien Tesla und Nvidia (Achtung: Training nicht UpToDate)
 
-*
+* Forecast:
+  * Evaluation_Prediction: Evaluierung der Performance der einzelnen Prognosemethoden anhand mehrerer Testsets
+    * Eval_Prediction: Main-Datei (Anpassbar für jede Methode und verschiedene Analysen)
+    * Naive: Naive Prognose
+    * Holt-Winters: Holt-Winters Prognose
+    * Arima: ARIMA Prognose
+    * LSTM: LSTM Prognose
+    * LSTM_OS: LSTM One-Shot Prognose
 
 * Unused (ohne Relevanz): Verworfene, bzw. in andere Dateien implementierte Elemente und Dateien zur Erstellung von Plots (nicht kommentiert) -> benötigt keiner Betrachtung
 
