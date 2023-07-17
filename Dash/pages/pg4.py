@@ -206,8 +206,8 @@ def update_PlotPred_arima(forecast_data, data, count_days, ticker):
     hist_data = pd.read_json(data, orient = "split")
     fore_data = pd.read_json(forecast_data, orient = "split")
     ticker_data = json.loads(ticker)
-    ticker_data_dic = dict(ticker_data)
-    currency = ticker_data_dic["currency"]
+    currency = ticker_data["financialCurrency"]
+    company_name = ticker_data["longName"]
     hist_data.drop(columns = ["Open", "High", "Low", "Volume", "Adj Close"], inplace = True)
     hist_data = hist_data.iloc[-60:]
     last_element = hist_data.index[-1]
@@ -218,7 +218,7 @@ def update_PlotPred_arima(forecast_data, data, count_days, ticker):
     fig_pred_arima = px.line(template = "simple_white")
     fig_pred_arima.add_trace(go.Scatter(x = hist_data.index, y = hist_data["Close"], mode = "lines", name = "Data", line_color = "blue"))
     fig_pred_arima.add_trace(go.Scatter(x = df_pred_add_last_element.index, y = df_pred_add_last_element["Close"],mode = "lines", name = "Prediction", line_color = "red"))
-    fig_pred_arima.update_layout(xaxis_title = "Date", yaxis_title = f"Close Price in {currency}")
+    fig_pred_arima.update_layout(xaxis_title = "Date", yaxis_title = f"Close Price in {currency}", title = f"{company_name}")
     return fig_pred_arima
 
 @callback(
@@ -231,8 +231,7 @@ def update_TrainPlot_Perf_arima(fit_data, data, ticker):
     hist_data = pd.read_json(data, orient = "split")
     fitted_data = pd.read_json(fit_data, orient = "split")
     ticker_data = json.loads(ticker)
-    ticker_data_dic = dict(ticker_data)
-    currency = ticker_data_dic["currency"]
+    currency = ticker_data["financialCurrency"]
     hist_data.drop(columns = ["Open", "High", "Low", "Volume", "Adj Close"], inplace = True)
     today = date.today()
     start = today - timedelta(days = 730)
@@ -265,8 +264,7 @@ def update_Pred_Man_arima(data, ticker, date):
     hist_data = pd.read_json(data, orient = "split")
     hist_data_for_pred = pd.read_json(data, orient = "split")
     ticker_data = json.loads(ticker)
-    ticker_data_dic = dict(ticker_data)
-    currency = ticker_data_dic["currency"]
+    currency = ticker_data["financialCurrency"]
     hist_data.drop(columns = ["Open", "High", "Low", "Volume", "Adj Close"], inplace = True)
     hist_data_for_pred.drop(columns = ["Open", "High", "Low", "Volume", "Adj Close"], inplace = True)
     date_format = datetime.strptime(date, "%Y-%m-%d").date()
