@@ -11,7 +11,7 @@ from other_func.windowing import data_to_windowed_data, windowed_df_to_d_x_y
 
 def LSTM(x_train, Y_train, x_val, Y_val, window, units):
     """
-    Erzeugt mittel LSTM-Methode Kursprognosen
+    LSTM Modell wird trainiert und im Anschluss werden die Trainings- und Validierungsdaten vorhergesagt
     :param x_train, Y_train, x_val, Y_val: Trainings- und Validierungsdaten
     :param window: Windowgröße
     :param units: Anzahl der Neuronen je LSTM Schicht
