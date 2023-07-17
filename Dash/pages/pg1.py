@@ -80,39 +80,38 @@ layout = dbc.Container(
 )
 
 @callback( #Lädt abgespeicherten Ticker und daraus die benötigten Informationen der Aktie und gibt sie an die oben definierte Card weiter
-    #Output("name", "children"),
-    #Output("city", "children"),
-    #Output("country", "children"),
-    #Output("webseite", "children"),
-    #Output("industry", "children"),
-    #Output("sector", "children"),
-    #Output("employees", "children"),
+    Output("name", "children"),
+    Output("city", "children"),
+    Output("country", "children"),
+    Output("webseite", "children"),
+    Output("industry", "children"),
+    Output("sector", "children"),
+    Output("employees", "children"),
     Output("currency", "children"),
     Output("price", "children"),
     Output("price_day_before", "children"),
     Output("volume", "children"),
     Output("market_capital", "children"),
-    #Output("enterprise_value", "children"),
+    Output("enterprise_value", "children"),
     Output("moving_average", "children"),
     Input("ticker_store", "data"))
 def update_Overview_Div(ticker):
     ticker_data = json.loads(ticker)
-    ticker_data_dic = dict(ticker_data)
-    #company_name = ticker_data["longName"] #Lädt aus Ticker die jeweilige Information der Aktie
-    #city = ticker_data["city"]
-    #country = ticker_data["country"]
-    #webseite = ticker_data["website"]
-    #industry = ticker_data["industry"]
-    #sector = ticker_data["sector"]
-    #employees = ticker_data["fullTimeEmployees"]
-    currency = ticker_data_dic["currency"] #ticker_data["financialCurrency"]
-    price = ticker_data_dic["lastPrice"] #ticker_data["currentPrice"]
-    price_before = ticker_data_dic["previousClose"] #ticker_data["regularMarketPreviousClose"]
-    volume = ticker_data_dic["lastVolume"] #ticker_data["volume"]
-    market_capital = ticker_data_dic["marketCap"] #ticker_data["marketCap"]
-    #enterprise_value = ticker_data["enterpriseValue"]
-    moving_average = ticker_data_dic["fiftyDayAverage"] #ticker_data["fiftyDayAverage"]
-    return currency, price, price_before, volume, market_capital, f"{moving_average:.2f}" #company_name, city, country, webseite, industry, sector, employees, enterprise_value,
+    company_name = ticker_data["longName"] #Lädt aus Ticker die jeweilige Information der Aktie
+    city = ticker_data["city"]
+    country = ticker_data["country"]
+    webseite = ticker_data["website"]
+    industry = ticker_data["industry"]
+    sector = ticker_data["sector"]
+    employees = ticker_data["fullTimeEmployees"]
+    currency = ticker_data["financialCurrency"]
+    price = ticker_data["currentPrice"]
+    price_before = ticker_data["regularMarketPreviousClose"]
+    volume = ticker_data["volume"]
+    market_capital = ticker_data["marketCap"]
+    enterprise_value = ticker_data["enterpriseValue"]
+    moving_average = ticker_data["fiftyDayAverage"]
+    return company_name, city, country, webseite, industry, sector, employees, currency, price, price_before, volume, market_capital, enterprise_value, f"{moving_average:.2f}" 
 
 @callback( #Lädt hist. Daten und plottet den gesamten Kursverlauf
     Output("plot_overview", "figure"),
@@ -121,8 +120,7 @@ def update_Overview_Div(ticker):
 def update_Overview_Plot(data, ticker):
     hist_data = pd.read_json(data, orient = "split")
     ticker_data = json.loads(ticker)
-    ticker_data_dic = dict(ticker_data)
-    #company_name = ticker_data_dic["longName"]
-    currency = ticker_data_dic["currency"]
-    fig_max_period = px.line(x = hist_data.index, y = hist_data["Close"], labels = {"x": "Date", "y": f"Close Price in {currency}"}, template = "simple_white") #Linien-Plot
+    company_name = ticker_data["longName"]
+    currency = ticker_data["financialCurrency"]
+    fig_max_period = px.line(x = hist_data.index, y = hist_data["Close"], labels = {"x": "Date", "y": f"Close Price in {currency}"}, template = "simple_white", title = f"{company_name}) #Linien-Plot
     return fig_max_period
