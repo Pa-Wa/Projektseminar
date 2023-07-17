@@ -153,8 +153,7 @@ def update_TrainValPlotPerf_StorePred_lstm(data, ticker, token):
     hist_data = pd.read_json(data, orient = "split")
     hist_data.drop(columns = ["Open", "High", "Low", "Volume", "Adj Close"], inplace = True)
     ticker_data = json.loads(ticker)
-    ticker_data_dic = dict(ticker_data)
-    currency = ticker_data_dic["currency"]
+    currency = ticker_data["financialCurrency"]
     today = datetime.today().date()
     start = today - timedelta(days=730) #Zeitraum anpassen (2Jahre)
     hist_data = hist_data.loc[hist_data.index >= np.datetime64(start)] #Datensatz filtern
@@ -259,8 +258,8 @@ def update_PlotPred_lstm(forecast_data, data, count_days, ticker):
     hist_data = pd.read_json(data, orient = "split")
     fore_data = pd.read_json(forecast_data, orient = "split")
     ticker_data = json.loads(ticker)
-    ticker_data_dic = dict(ticker_data)
-    currency = ticker_data_dic["currency"]
+    currency = ticker_data["financialCurrency"]
+    company_name = ticker_data["longName"]
     hist_data.drop(columns = ["Open", "High", "Low", "Volume", "Adj Close"], inplace = True)
     hist_data = hist_data.iloc[-60:]
     last_element = hist_data.index[-1]
@@ -271,7 +270,7 @@ def update_PlotPred_lstm(forecast_data, data, count_days, ticker):
     fig_pred_lstm = px.line(template = "simple_white")
     fig_pred_lstm.add_trace(go.Scatter(x = hist_data.index, y = hist_data["Close"], mode = "lines", name = "Data", line_color = "blue"))
     fig_pred_lstm.add_trace(go.Scatter(x = df_pred_add_last_element.index, y = df_pred_add_last_element["Close"],mode = "lines", name = "Prediction", line_color = "red"))
-    fig_pred_lstm.update_layout(xaxis_title = "Date", yaxis_title = f"Close Price in {currency}")
+    fig_pred_lstm.update_layout(xaxis_title = "Date", yaxis_title = f"Close Price in {currency}", title = f"{company_name}")
     return fig_pred_lstm
 
 @callback( #Update manuelle Prognose (Plot und Performance)
@@ -288,8 +287,7 @@ def update_Pred_Man_lstm(data, ticker, date, token):
     start = date_format - timedelta(days = 730)
     hist_data = hist_data.loc[hist_data.index >= np.datetime64(start)]
     ticker_data = json.loads(ticker)
-    ticker_data_dic = dict(ticker_data)
-    currency = ticker_data_dic["currency"]
+    currency = ticker_data["financialCurrency"]
     hist_data.drop(columns = ["Open", "High", "Low", "Volume", "Adj Close"], inplace = True)
     hist_data_for_pred = hist_data.copy()
     predicted_day = datetime.strptime(date, "%Y-%m-%d").date()
