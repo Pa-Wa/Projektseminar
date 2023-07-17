@@ -65,7 +65,7 @@ def LSTM(x_train, Y_train, x_val, Y_val, window, last_price, scaler, token):
         model.compile(loss = "mse", optimizer = Adam(learning_rate = 0.001), metrics = ["mean_absolute_error"]) #Definiert Performance-Messung
         model.fit(x_train, Y_train, validation_data = (x_val, Y_val), epochs = 50, verbose = 0, batch_size = 32) #Trainiert Modell und wertet anhand Vald-Set aus
 
-    train_predict = model.predict(x_train) #Verhersage der Trainigs- und Validierungsdaten
+    train_predict = model.predict(x_train) #Vorhersage der Trainigs- und Validierungsdaten
     val_predict = model.predict(x_val)
     
     #Prognose
