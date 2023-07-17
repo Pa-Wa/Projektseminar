@@ -9,6 +9,12 @@ from sklearn.metrics import mean_squared_error
 import math
 from other_func.windowing import data_to_windowed_data, windowed_df_to_d_x_y
 
+"""
+Datei um die beste Architektur und Parametereinstellungen des LSTM Modells zu finden.
+Diese Datei kann durch leichte Anpassungen für alle analysierten Elemente genutzt werden (momentane Einstellung: Architektur-Analyse)
+Dazu muss manuell die LSTM Funktion angepasst werden (deshlab ist diese in der Datei inkludiert)
+"""
+
 def LSTM(x_train, Y_train, x_val, Y_val, window, units):
     """
     LSTM Modell wird trainiert und im Anschluss werden die Trainings- und Validierungsdaten vorhergesagt
@@ -39,15 +45,14 @@ def LSTM(x_train, Y_train, x_val, Y_val, window, units):
 
     return train_predict, val_predict
 
-aktien = ["ALV.DE","AMZ.DE","MDO.DE"]
-
+stocks = ["ALV.DE", "AMZ.DE", "MDO.DE"]
 test_runs = 5
 counter = 0
 neurons = [32, 64, 128]
 for neuron in neurons:
     counter_df = 0
-    for aktie in aktien:
-        hist_data = yf.download(aktie, start = "2020-06-23", end = "2023-06-23")
+    for stock in stocks:
+        hist_data = yf.download(stock, start = "2020-06-23", end = "2023-06-23")
         hist_data.drop(columns = ["Open", "High", "Low", "Volume", "Adj Close"], axis = 1, inplace = True)
         data = hist_data[: len(hist_data)-10]
         data_for_scaler = data.copy()
@@ -66,7 +71,7 @@ for neuron in neurons:
         dates_train, X_train, y_train = dates[:train_split], X[:train_split], y[:train_split]
         dates_val, X_val, y_val = dates[train_split:], X[train_split:], y[train_split:]
         for runs in range(test_runs):
-            print(neuron, aktie, runs)
+            print(neuron, stock, runs)
             train_predictions, val_predictions = LSTM(X_train, y_train, X_val, y_val, window_size, neuron)
 
             train_predictions = scaler.inverse_transform(train_predictions)
