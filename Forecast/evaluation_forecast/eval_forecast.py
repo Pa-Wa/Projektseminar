@@ -16,6 +16,7 @@ Datei zur Evaluierung der Performance der einzelnen Prognosemethoden.
 Außerdem wurde hiermit die Analyse der Parametereinstellung für Holt-Winters und ARIMA durchgeführt.
 Dazu können Parameter in den einzelnen Funktionen angepasst werden.
 Der zeitliche Horizont wird in dieser Datei angepasst.
+Es wurden auch weitere Analysen hiermit gefahren, dazu wurde das Coding jeweils angepasst.
 """
 
 def MAE(y_true, y_pred):
@@ -30,7 +31,7 @@ def MAE(y_true, y_pred):
     mae_scaled = round(mae/average, 4)
     return mae_scaled
 
-aktien = ["ALV.DE", "DPW.DE", "AMZ.DE", "MDO.DE", "NVD.DE", "^MDAXI"] #Ausgewählte Aktien zum Vergleich
+stocks = ["ALV.DE", "DPW.DE", "AMZ.DE", "MDO.DE", "NVD.DE", "^MDAXI"] #Ausgewählte Aktien zum Vergleich
 end_zeitpunkte = ["2023-02-18", "2023-05-17", "2023-07-07", "2022-12-16"] #Ausgewählte Zeiträume zum Vergleich
 end_zeitpunkte_ts = [datetime.strptime(end_zeitpunkte[0], "%Y-%m-%d").date(), #Wandle Datum in Date-Format um
                       datetime.strptime(end_zeitpunkte[1], "%Y-%m-%d").date(),
@@ -39,17 +40,17 @@ end_zeitpunkte_ts = [datetime.strptime(end_zeitpunkte[0], "%Y-%m-%d").date(), #W
 
 #Zeitraum der historischen Daten anpassen: HW (5 Jahre), ARIMA(2 Jahre), LSTM-Modelle (3 Jahre) oder manuell für Analyse HW/ARIMA
 time_horizont = 3
-start_zeitpunkte_ts = [end_zeitpunkte_ts[0]-relativedelta(years=time_horizont), #Bestimme Start für die historischen Daten
-                        end_zeitpunkte_ts[1]-relativedelta(years=time_horizont),
-                        end_zeitpunkte_ts[2]-relativedelta(years=time_horizont),
-                        end_zeitpunkte_ts[3]-relativedelta(years=time_horizont)]
+start_zeitpunkte_ts = [end_zeitpunkte_ts[0] - relativedelta(years = time_horizont), #Bestimme Start für die historischen Daten
+                        end_zeitpunkte_ts[1] - relativedelta(years = time_horizont),
+                        end_zeitpunkte_ts[2] - relativedelta(years = time_horizont),
+                        end_zeitpunkte_ts[3] - relativedelta(years  =time_horizont)]
 
 counter = 0 #Zur Erstellung des DF
-for aktie in aktien: #Iteriere über alle Aktien
-    data = yf.download(aktie, period = "max") #Downloade historische Daten
+for stock in stocks: #Iteriere über alle Aktien
+    data = yf.download(stock, period = "max") #Downloade historische Daten
     data.drop(columns = ["Open", "High", "Low", "Volume", "Adj Close"], axis = 1, inplace = True) #Entferne nicht benötigte Spalten
     for i in range(len(end_zeitpunkte)): #Iteriere über alle Zeiträume
-        print(aktie,i)
+        print(stock,i)
         filtered_df = data.loc[start_zeitpunkte_ts[i]: end_zeitpunkte_ts[i]] #Filtere Datensatz bezüglich des Zeitraums
         hist_data = filtered_df[: len(filtered_df) - 10] #Historische Daten für Prognose
         hist_data_for_function = hist_data.copy() #Für den Funktionsaufruf, da hist_data bei LSTM Methoden verändert wird
