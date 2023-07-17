@@ -66,11 +66,8 @@ app.layout = dbc.Container([
 def store_data(value):
     aktie_ticker = yf.Ticker(value)
     df = yf.download(value, period = "max")
-    #ticker_data_json = json.dumps(aktie_ticker.info)
-    fast_info = aktie_ticker.fast_info
-    fast_info_dict = fast_info.items()
-    fast_info_json = json.dumps(fast_info_dict)
-    return df.to_json(orient = "split"), fast_info_json #Im Speicher können nur JSON-Dateien gespeichert werden, deshalb Formatierung
+    ticker_data_json = json.dumps(aktie_ticker.info)
+    return df.to_json(orient = "split"), ticker_data_json #Im Speicher können nur JSON-Dateien gespeichert werden, deshalb Formatierung
 
 if __name__ == "__main__": #Führt Dashboard aus
     app.run(debug=False)
