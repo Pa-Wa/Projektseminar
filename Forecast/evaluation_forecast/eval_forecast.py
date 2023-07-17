@@ -23,7 +23,6 @@ def MAE(y_true, y_pred):
     mae_scaled = round(mae/average, 4)
     return mae_scaled
 
-
 aktien = ["ALV.DE", "DPW.DE", "AMZ.DE", "MDO.DE", "NVD.DE", "^MDAXI"]
 end_zeitpunkte = ["2023-02-18", "2023-05-17", "2023-07-07", "2022-12-16"]
 end_zeitpunkte_ts = [datetime.strptime(end_zeitpunkte[0], "%Y-%m-%d").date(),
