@@ -9,7 +9,7 @@ import tensorflow as tf
 
 def evaluate_model(y_true, y_predicted):
     """
-    Evaluiert die Performance des Modells auf den Trainings- und Validdierungsdaten
+    Evaluiert die Performance des Modells auf den Trainings- und Validierungsdaten
     :param y_true, y_predicted: Tatsächliche Kurse und vorhergesagte Kurse
     :return total_score (MSE), total_mean_price (Durschnittskurs), total_mae_score (MAE)
     """
