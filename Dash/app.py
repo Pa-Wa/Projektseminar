@@ -8,7 +8,6 @@ import json
 '''
 Achtung: Bei wiederholter Ausführung des Dashboards, bitte die Seite im Browser vorher schließen und nicht nur Refreshen!
 Refresh löscht nicht den Cache, was bei den Inputs (bspw. Dropdowns) zu einem Error führen kann.
-Dash außerhalb vom Repro ausführen, ansonsten könnte es sein, dass die trainiersten Modelle nicht gefunden werden können.
 
 Main-Page: Legt Layout der einzelnen Seiten fest
 '''
