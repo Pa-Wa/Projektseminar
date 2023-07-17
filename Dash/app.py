@@ -5,12 +5,12 @@ import dash_bootstrap_components as dbc
 import yfinance as yf
 import json
 
-'''
+"""
 Achtung: Bei wiederholter Ausführung des Dashboards, bitte die Seite im Browser vorher schließen und nicht nur Refreshen!
 Refresh löscht nicht den Cache, was bei den Inputs (bspw. Dropdowns) zu einem Error führen kann.
 
 Main-Page: Legt Layout der einzelnen Seiten fest
-'''
+"""
 
 app = dash.Dash(__name__, use_pages = True, external_stylesheets = [dbc.themes.DARKLY]) #Bootstrap Stylesheet
 
