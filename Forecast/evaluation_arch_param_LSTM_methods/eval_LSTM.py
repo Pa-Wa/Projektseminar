@@ -7,7 +7,7 @@ from keras.optimizers import Adam
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 import math
-from  other_func.Windowing import data_to_windowed_data, windowed_df_to_d_x_y
+from other_func.windowing import data_to_windowed_data, windowed_df_to_d_x_y
 
 def LSTM(x_train, Y_train, x_val, Y_val, window, units):
     """
