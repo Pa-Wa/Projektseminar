@@ -1,6 +1,11 @@
 from pmdarima.arima import auto_arima
 import pandas as pd
 
+"""
+Datei wurde auch zur Analyse der Parameter genutzt.
+Dazu einfach in Main-Datei den Zeithorizont ändern.
+"""
+
 def ARIMA(historical_data):
     """
     Führt mittel ARIMA-Methode eine Kursprognose aus
