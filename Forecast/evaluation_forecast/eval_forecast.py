@@ -11,6 +11,13 @@ from forecast_methods.Arima import ARIMA
 from forecast_methods.LSTM import LSTM, data_to_windowed_data, windowed_df_to_d_x_y
 from forecast_methods.LSTM_OS import LSTM_OS
 
+"""
+Datei zur Evaluierung der Performance der einzelnen Prognosemethoden.
+Außerdem wurde hiermit die Analyse der Parametereinstellung für Holt-Winters und ARIMA durchgeführt.
+Dazu können Parameter in den einzelnen Funktionen angepasst werden.
+Der zeitliche Horizont wird in dieser Datei angepasst.
+"""
+
 def MAE(y_true, y_pred):
     """
     Berechnet "Mean Absolute Error" skaliert
@@ -30,7 +37,7 @@ end_zeitpunkte_ts = [datetime.strptime(end_zeitpunkte[0], "%Y-%m-%d").date(), #W
                       datetime.strptime(end_zeitpunkte[2], "%Y-%m-%d").date(),
                       datetime.strptime(end_zeitpunkte[3], "%Y-%m-%d").date()]
 
-#Zeitraum der historischen Daten anpassen: HW (5 Jahre), ARIMA(2 Jahre), LSTM-Modelle (3 Jahre)
+#Zeitraum der historischen Daten anpassen: HW (5 Jahre), ARIMA(2 Jahre), LSTM-Modelle (3 Jahre) oder manuell für Analyse HW/ARIMA
 time_horizont = 3
 start_zeitpunkte_ts = [end_zeitpunkte_ts[0]-relativedelta(years=time_horizont), #Bestimme Start für die historischen Daten
                         end_zeitpunkte_ts[1]-relativedelta(years=time_horizont),
