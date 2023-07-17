@@ -1,6 +1,13 @@
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 import pandas as pd
 
+"""
+Datei wurde auch zur Analyse der Paramtereinstellungen genutzt.
+Dazu einfach Änderungen bei ExponentialSmoothing oder model.fit einfügen.
+Bsp. smoothing_trend = 0.2 -> Setzt Gewichtungsfaktor des Trends fest.
+Für weitere Einstellungsmöglichkeiten s. Doku der Bibliothek statsmodels.
+"""
+
 def HoltWinters(historical_data): 
     """
     Führt eine Kursprognose anhand der Holt-Winters Methode aus
