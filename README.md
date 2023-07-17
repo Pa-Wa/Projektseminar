@@ -22,11 +22,11 @@ Universität Siegen
   * saved_model: Vortrainierte Modelle für die Methoden LSTM und LSTM-OS für die Aktien Tesla und Nvidia (Achtung: Training nicht UpToDate)
 
 * Forecast:
-  * Evaluation_Arch_Param_LSTM_Methods: Evaluation der besten Architektur/Parametereinstellungen der LSTM-Modelle
-    * Eval_LSTM
-    * Eval_LSTM_OS  
-  * Evaluation_Prediction: Evaluierung der Performance der einzelnen Prognosemethoden anhand mehrerer Testsets
-    * Eval_Prediction: Main-Datei (Anpassbar für jede Methode und verschiedene Analysen)
+  * evaluation_arch_param_LSTM_methods: Evaluation der besten Architektur/Parametereinstellungen der LSTM-Modelle
+    * eval_LSTM
+    * eval_LSTM_OS  
+  * evaluation_forecast: Evaluierung der Performance der einzelnen Prognosemethoden anhand mehrerer Testsets
+    * eval_forecast: Main-Datei (Anpassbar für jede Methode und verschiedene Analysen)
     * Naive: Naive Prognose
     * Holt-Winters: Holt-Winters Prognose
     * Arima: ARIMA Prognose
