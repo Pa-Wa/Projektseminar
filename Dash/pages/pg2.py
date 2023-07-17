@@ -158,10 +158,9 @@ def update_Data_analysis(data, period, check, start_date, end_date):
         Input("RI_analysis", "value"))
 def update_Period_analysis(data, ticker, selected_obj):
     ticker_data = json.loads(ticker)
-    ticker_data_dic = dict(ticker_data)
     hist_data = pd.read_json(data, orient = "split")
     hist_data.drop(columns = ["Adj Close"], inplace = True) #Entferne nicht benötigte Spalten aus dem DataFrame
-    currency = ticker_data_dic["currency"]
+    currency = ticker_data["financialCurrency"]
     period_high = round(hist_data[selected_obj].max(), 2) #Berechnet Kennzahlen
     period_low = round(hist_data[selected_obj].min(), 2)
     period_mean = round(hist_data[selected_obj].mean(), 2)
@@ -187,13 +186,12 @@ def update_Period_analysis(data, ticker, selected_obj):
     Input("ticker_store", "data"))
 def update_Today_analysis(ticker):
     ticker_data = json.loads(ticker)
-    ticker_data_dic = dict(ticker_data)
-    open_price = ticker_data_dic["open"] #ticker_data["regularMarketOpen"]
-    close_price_yesterday = ticker_data_dic["previousClose"] #ticker_data["regularMarketPreviousClose"]
-    low_price = ticker_data_dic["dayLow"] #ticker_data["regularMarketDayLow"]
-    high_price = ticker_data_dic["dayLow"] #ticker_data["regularMarketDayHigh"]
-    currency = ticker_data_dic["currency"] #ticker_data["financialCurrency"]
-    current_price = ticker_data_dic["lastPrice"] #ticker_data["currentPrice"]
+    open_price = ticker_data["regularMarketOpen"]
+    close_price_yesterday = ticker_data["regularMarketPreviousClose"]
+    low_price = ticker_data["regularMarketDayLow"]
+    high_price = ticker_data["regularMarketDayHigh"]
+    currency = ticker_data["financialCurrency"]
+    current_price = ticker_data["currentPrice"]
     price_trend = round(((current_price - close_price_yesterday) / close_price_yesterday) * 100, 2) #Berechnet, ob Kurs gefallen oder gestiegen, passe demnach das Vorzeichen an
     if price_trend < 0:
         trend = "-" 
@@ -243,17 +241,17 @@ def update_Table_analysis(data):
 def update_Plot_analysis(data, selected_obj, ticker):
     hist_data = pd.read_json(data, orient = "split")
     ticker_data = json.loads(ticker)
-    ticker_data_dic = dict(ticker_data)
-    currency = ticker_data_dic["currency"]
+    currency = ticker_data["financialCurrency"]
+    company_name = ticker_data["longName"]
     if len (hist_data) >= 30: #Falls der gewählte Zeitraum mehr als 30 Kurse enthält, plotte mit Datumsangaben im Date-Format
         if selected_obj == "Close" or selected_obj == "Low" or selected_obj == "High" or selected_obj == "Open": #Falls nicht Volumen (für Beschriftung)
-            fig_period = px.line(x=hist_data.index, y = hist_data[selected_obj], labels= {"x": "Date", "y": f"{selected_obj} Price in {currency}"}, template = "simple_white")
+            fig_period = px.line(x=hist_data.index, y = hist_data[selected_obj], labels= {"x": "Date", "y": f"{selected_obj} Price in {currency}"}, template = "simple_white", title = f"{company_name}")
         else:
-            fig_period = px.line(x=hist_data.index, y = hist_data[selected_obj], labels= {"x": "Date", "y": "Volume"}, template = "simple_white")
+            fig_period = px.line(x=hist_data.index, y = hist_data[selected_obj], labels= {"x": "Date", "y": "Volume"}, template = "simple_white", title = f"{company_name}")
     else: #Falls weniger, dann plotte mit String-Datum und zeige nur die Tage auf der x-Achse an, die auch im DataFrame vorkommen -> keine Wochenendtage 
         if selected_obj == "Close" or selected_obj == "Low" or selected_obj == "High" or selected_obj == "Open":
-            fig_period = px.line(x=hist_data.index.strftime("%Y-%m-%d"), y = hist_data[selected_obj], labels= {"x": "Date", "y": f"{selected_obj} Price in {currency}"}, template = "simple_white", markers=True)
+            fig_period = px.line(x=hist_data.index.strftime("%Y-%m-%d"), y = hist_data[selected_obj], labels= {"x": "Date", "y": f"{selected_obj} Price in {currency}"}, template = "simple_white", markers=True, title = f"{company_name}")
             fig_period.update_layout(xaxis={"type": "category"})
         else:
-            fig_period = px.line(x=hist_data.index, y = hist_data[selected_obj], labels= {"x": "Date", "y": "Volume"}, template = "simple_white")
+            fig_period = px.line(x=hist_data.index, y = hist_data[selected_obj], labels= {"x": "Date", "y": "Volume"}, template = "simple_white", title = f"{company_name}")
     return fig_period
