@@ -25,7 +25,7 @@ Universität Siegen
   * evaluation_arch_param_LSTM_methods: Evaluation der besten Architektur/Parametereinstellungen der LSTM-Modelle
     * eval_LSTM
     * eval_LSTM_OS
-    * other_func (Windowing)
+    * other_func (für LSTM und LSTM_OS)
   * evaluation_forecast: Evaluierung der Performance der einzelnen Prognosemethoden anhand mehrerer Testsets
     * eval_forecast: Main-Datei (Anpassbar für jede Methode und verschiedene Analysen)
     * forecast_methods: Funktionen der einzelnen Prognosen (HW, ARIMA, LSTM, LSTM-OS, Naive Prognose)
