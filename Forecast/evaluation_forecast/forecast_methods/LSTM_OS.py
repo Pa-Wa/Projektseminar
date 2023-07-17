@@ -40,7 +40,7 @@ def LSTM_OS(historical_data):
     
     checkpoint_filepath = "best_model.h5"
     model_checkpoint_callback = keras.callbacks.ModelCheckpoint(filepath = checkpoint_filepath, monitor = "val_loss", mode = "min",
-                                                                save_best_only=True) #Speichere bestes Modell ab
+                                                                save_best_only = True) #Speichere bestes Modell ab
 
     model.fit(X_train, y_train, validation_data = (X_val, y_val), epochs = 80, verbose = 0, callbacks = [model_checkpoint_callback], batch_size = 32) #Trainiert Modell
     
