@@ -122,5 +122,5 @@ def update_Overview_Plot(data, ticker):
     ticker_data = json.loads(ticker)
     company_name = ticker_data["longName"]
     currency = ticker_data["financialCurrency"]
-    fig_max_period = px.line(x = hist_data.index, y = hist_data["Close"], labels = {"x": "Date", "y": f"Close Price in {currency}"}, template = "simple_white", title = f"{company_name}) #Linien-Plot
+    fig_max_period = px.line(x = hist_data.index, y = hist_data["Close"], labels = {"x": "Date", "y": f"Close Price in {currency}"}, template = "simple_white", title = f"{company_name}") #Linien-Plot
     return fig_max_period
