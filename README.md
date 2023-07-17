@@ -27,12 +27,7 @@ Universität Siegen
     * eval_LSTM_OS  
   * evaluation_forecast: Evaluierung der Performance der einzelnen Prognosemethoden anhand mehrerer Testsets
     * eval_forecast: Main-Datei (Anpassbar für jede Methode und verschiedene Analysen)
-    * forecast_methods:
-      * Naive: Naive Prognose
-      * Holt-Winters: Holt-Winters Prognose
-      * Arima: ARIMA Prognose
-      * LSTM: LSTM Prognose
-      * LSTM_OS: LSTM One-Shot Prognose
+    * forecast_methods: Funktionen der einzelnen Prognosen (HW, ARIMA, LSTM, LSTM-OS, Naive)
 
 * Unused (ohne Relevanz): Verworfene, bzw. in andere Dateien implementierte Elemente und Dateien zur Erstellung von Plots (nicht kommentiert) -> benötigt keiner Betrachtung
 
