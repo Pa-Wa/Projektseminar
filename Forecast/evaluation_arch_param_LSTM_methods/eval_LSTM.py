@@ -41,7 +41,6 @@ def LSTM(x_train, Y_train, x_val, Y_val, window, units):
 
 aktien = ["ALV.DE","AMZ.DE","MDO.DE"]
 
-counter_df = 0
 test_runs = 5
 counter = 0
 neurons = [32, 64, 128]
