@@ -17,6 +17,10 @@ import math
 import warnings
 warnings.filterwarnings("ignore", category=pd.core.common.SettingWithCopyWarning)
 
+"""
+Verfahren, Architektur und Parameter wurden im Nachgang neu evaluiert!
+"""
+
 def LSTM10(hist_data):
     scaler = MinMaxScaler(feature_range = (0, 1))
     data_scaled = scaler.fit_transform(hist_data)
