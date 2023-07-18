@@ -9,6 +9,12 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error
 from other_func.performance_measurement_LSTM_OSpy import evaluate_model
 
+"""
+Datei um die beste Architektur und Parametereinstellungen des LSTM One-Shot Modells zu finden (anhand RMSE%).
+Diese Datei kann durch leichte Anpassungen für alle analysierten Elemente genutzt werden (momentane Einstellung: Architektur-Analyse)
+Dazu muss manuell die LSTM Funktion angepasst werden (deshlab ist diese in der Datei inkludiert).
+"""
+
 def LSTM_OS(x_train, Y_train, x_val, Y_val, window_size, units, prediction_sz):
     """
     LSTM One-Shot Modell wird trainiert und im Anschluss werden die Trainings- und Validierungsdaten vorhergesagt
