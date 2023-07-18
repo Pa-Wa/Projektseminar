@@ -12,7 +12,7 @@ from other_func.windowing import data_to_windowed_data, windowed_df_to_d_x_y
 """
 Datei um die beste Architektur und Parametereinstellungen des LSTM Modells zu finden (anhand RMSE%).
 Diese Datei kann durch leichte Anpassungen für alle analysierten Elemente genutzt werden (momentane Einstellung: Architektur-Analyse)
-Dazu muss manuell die LSTM Funktion angepasst werden (deshlab ist diese in der Datei inkludiert)
+Dazu muss manuell die LSTM Funktion angepasst werden (deshlab ist diese in der Datei inkludiert).
 """
 
 def LSTM(x_train, Y_train, x_val, Y_val, window, units):
@@ -85,10 +85,10 @@ for neuron in neurons: #Iterieret Über Neuronen
                 df_RMSE = pd.DataFrame({"RMSE_Train": train_rmse, "RMSE_Valid": val_rmse}, index = [0]) #Erstellt DF
             else: 
                 df_RMSE.loc[runs] = [train_rmse, val_rmse] #Fügt Zeile zum DF hinzu
-            if runs == test_runs-1: #Falls letzter Durchlauf
-                train_rmse_average = df_RMSE["RMSE_Train"].mean() #Berechnet Mittelwert des RMSE
+            if runs == test_runs-1: #Falls letzter Durchlauf einer Aktie
+                train_rmse_average = df_RMSE["RMSE_Train"].mean() #Berechnet Mittelwert des RMSE der Durchläufe
                 val_rmse_average = df_RMSE["RMSE_Valid"].mean()
-                train_rmse_average_procent = train_rmse_average/average_price_train #Berechnet RMSE%
+                train_rmse_average_procent = train_rmse_average/average_price_train #Berechnet RMSE% der Aktie
                 val_rmse_average_procent = val_rmse_average/average_price_val
                 if counter_df == 0: #Falls 1. Run einer Parametereinstellung
                     df_RMSE_full = pd.DataFrame({"RMSE_Train": train_rmse_average_procent, "RMSE_Valid": val_rmse_average_procent}, index = [0]) #Erstellt DF
