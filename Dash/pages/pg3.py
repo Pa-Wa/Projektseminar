@@ -10,7 +10,7 @@ from pandas_market_calendars import get_calendar
 import plotly.graph_objects as go
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import math
-from methods.HoltWinter_func import HoltWinter
+from methods.HoltWinters_func import HoltWinters
 pd.options.mode.chained_assignment = None
 
 dash.register_page(__name__, name = "Holt-Winter predition")
@@ -148,7 +148,7 @@ def update_Store_Data_hw(data):
     today = datetime.today().date()
     start = today - timedelta(days = 730) #Definiert Anfang der historischen Daten für die Prognose (2 Jahre)
     hist_data = hist_data.loc[hist_data.index >= np.datetime64(start)] #Filtert DF dementsprechend
-    forecast_df, fit_values = HoltWinter(hist_data, 30) #Funktionsaufruf
+    forecast_df, fit_values = HoltWinters(hist_data, 30) #Funktionsaufruf
     forecast = forecast_df["Close"].tolist()
     market_calendar = get_calendar("NYSE") #Definiert Kalender, damit nur Börsentage erreicht werden
     last_date = hist_data.index[-1]
@@ -274,7 +274,7 @@ def update_pred_Man_hw(data, ticker, date):
     hist_data = hist_data.loc[hist_data.index < np.datetime64(predicted_day)]
     hist_data_for_pred = hist_data_for_pred.loc[hist_data_for_pred.index >= np.datetime64(predicted_day)]
     hist_data_for_pred = hist_data_for_pred.iloc[:10]
-    forecast_df, fit_values = HoltWinter(hist_data, 10)
+    forecast_df, fit_values = HoltWinters(hist_data, 10)
     forecast = forecast_df["Close"].tolist()
     market_calendar = get_calendar("NYSE")
     last_date = hist_data.index[-1]
