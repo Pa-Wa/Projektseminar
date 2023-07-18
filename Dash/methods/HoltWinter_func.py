@@ -1,7 +1,7 @@
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 import pandas as pd
 
-def HoltWinter(historical_data, pred_days): 
+def HoltWinters(historical_data, pred_days): 
     """
     Führt eine Kursprognose anhand der Holt-Winters Methode aus
     :param historical_data: Historische Daten
