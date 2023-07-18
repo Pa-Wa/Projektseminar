@@ -10,7 +10,7 @@ def HoltWinter(historical_data, pred_days):
     :return: fitted_values (Angepasste Trainings-Daten)
     """
     
-    model = ExponentialSmoothing(historical_data, trend = "add",
+    model = ExponentialSmoothing(historical_data["Close"].tolist(), trend = "add",
                                   seasonal = "add", initialization_method = "legacy-heuristic", seasonal_periods = 12) #Definiert Modell
     model_fit = model.fit() #Trainiert Modell
     fitted_values = model_fit.fittedvalues #Speichert angepasste, trainierte Daten ab
