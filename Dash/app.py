@@ -6,6 +6,8 @@ import yfinance as yf
 import json
 
 """
+Achtung: Bibliotheken, insbesondere yfinance aktualisieren! Bei yf wird in älteren Versionen ein ClientError beim Abfragen des Tickers erzeugt,
+dieser würde alle Funktion des gesamten Dashboards unbrauchbar machen.
 Achtung: Bei wiederholter Ausführung des Dashboards, bitte die Seite im Browser vorher schließen und nicht nur Refreshen!
 Refresh löscht nicht den Cache, was bei den Inputs (bspw. Dropdowns) zu einem Error führen kann.
 
