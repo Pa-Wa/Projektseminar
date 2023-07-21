@@ -78,8 +78,8 @@ for neuron in neurons: #Iterieret Über Neuronen
             y_val_rescaled = y_val.reshape(len(y_val), 1)
             y_val_rescaled = scaler.inverse_transform(y_val_rescaled)
             average_price_val = y_val_rescaled.mean()
-            train_rmse = math.sqrt(mean_squared_error(y_trained, train_predictions)) #Berechnet RMSE
-            val_rmse = math.sqrt(mean_squared_error(y_valed, val_predictions))
+            train_rmse = math.sqrt(mean_squared_error(y_train_rescaled, train_predictions)) #Berechnet RMSE
+            val_rmse = math.sqrt(mean_squared_error(y_val_rescaled, val_predictions))
 
             if runs == 0: #Falls 1. Durchlauf
                 df_RMSE = pd.DataFrame({"RMSE_Train": train_rmse, "RMSE_Valid": val_rmse}, index = [0]) #Erstellt DF
