@@ -8,8 +8,8 @@ def NaivePrediction(historical_data):
     """
     forecast = []
     prices = historical_data["Close"].tolist()
-    last_price = prices[-1]
+    last_price = prices[-1] #Bestimmt letzten bekannten Kurs
     for i in range(10):
-        forecast.append(last_price)
-    forecast_df = pd.DataFrame(forecast, columns=["Predicted Price"])
+        forecast.append(last_price) #Nimmt letzten Kurs als Prognose für die nächsten 10 Tage
+    forecast_df = pd.DataFrame(forecast, columns=["Predicted Price"]) #Erstellt DF
     return forecast_df
