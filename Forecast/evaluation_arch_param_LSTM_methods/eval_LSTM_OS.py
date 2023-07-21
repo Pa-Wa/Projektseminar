@@ -6,7 +6,6 @@ from keras.models import Sequential, load_model
 from keras import layers
 from keras.optimizers import Adam
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.metrics import mean_squared_error
 from other_func.performance_measurement_LSTM_OSpy import evaluate_model
 
 """
