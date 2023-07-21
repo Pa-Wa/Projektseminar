@@ -41,7 +41,6 @@ def LSTM(historical_data):
     pre_last_window = X_val[-1] #Speichert letztes Window des Vald-Sets
     last_window = np.delete(pre_last_window, obj = [0])  #Löscht 1. Preis des Windows und fügt letzten Preis der historischen Daten (letztes Y des Vald-Sets) an
     
-    print(historical_data)
     last_price = historical_data.iloc[-1][-1]
     last_window = np.append(last_window, last_price)
     last_window = np.reshape(last_window, (len(last_window), 1))
