@@ -36,7 +36,7 @@ def LSTM(x_train, Y_train, x_val, Y_val, window, units):
     model_checkpoint_callback = keras.callbacks.ModelCheckpoint(filepath = checkpoint_filepath, monitor = "val_loss", mode = "min",
                                                                 save_best_only = True) #Speichere bestes Modell ab
 
-    model.fit(x_train, Y_train, validation_data = (x_val, Y_val), epochs = 50, verbose = 0, batch_size = 32, callbacks = [model_checkpoint_callback]) #Trainiert Modell und wertet anhand Vald-Set aus
+    model.fit(x_train, Y_train, validation_data = (x_val, Y_val), epochs = 80, verbose = 0, batch_size = 32, callbacks = [model_checkpoint_callback]) #Trainiert Modell und wertet anhand Vald-Set aus
 
     model = load_model(checkpoint_filepath) #Lädt bestes Modell
 
