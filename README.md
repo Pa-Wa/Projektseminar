@@ -19,7 +19,7 @@ Universität Siegen
     * pg5: LSTM Prognose
     * pg6: LSTM One-Shot Prognose
   * methods: Funktionen der einzelnen Prognosen (HW, ARIMA, LSTM, LSTM-OS)
-  * saved_model: Vortrainierte Modelle für die Methoden LSTM und LSTM-OS für die Aktien Tesla und Nvidia (Achtung: Training nicht UpToDate)
+  * saved_model: Vortrainierte Modelle für die Methoden LSTM und LSTM-OS für die Aktien Tesla und Nvidia (Achtung: Training nicht UpToDate & Dash-Ordner als Pfad in Kommandozeile, damit Trainingsdaten gefunden werden!)
 
 * Forecast:
   * evaluation_arch_param_LSTM_methods: Evaluation der besten Architektur/Parametereinstellungen der LSTM-Modelle
