@@ -8,6 +8,14 @@ Universität Siegen
 
 ---
 
+#### Inhalt:
+
+* Erstellung eines Finanz-Dashboards mittels Plotly Dash
+* Implementierung verschiedener Methoden (Holt-Winters, ARIMA, LSTM) zur Vorhersage von Aktienkursen
+* Evaluation der Prognoseverfahren
+
+---
+
 #### Doku:
 * Dash:
   * app.py: Main-Datei (auszuführende Datei) der Dash-App; Layout Definition der einzelnen Pages
